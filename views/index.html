@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio Final - Backend II</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #666;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .login-form {
+            max-width: 400px;
+            margin: 4rem auto;
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .user-info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="logo">
+                <i class="fas fa-code"></i> Backend II
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" onclick="showPage('home')">
+                    <i class="fas fa-home"></i> Início
+                </a>
+                <a href="#" class="nav-link" onclick="showPage('produtos')">
+                    <i class="fas fa-box"></i> Produtos
+                </a>
+                <div id="auth-links">
+                    <a href="#" class="nav-link" onclick="showPage('login')">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </div>
+                <div id="user-menu" class="hidden">
+                    <a href="#" class="nav-link" onclick="showPage('clientes')">
+                        <i class="fas fa-users"></i> Clientes
+                    </a>
+                    <a href="#" class="nav-link" onclick="showPage('usuarios')">
+                        <i class="fas fa-user-cog"></i> Usuários
+                    </a>
+                    <span class="user-info" id="user-info"></span>
+                    <a href="#" class="nav-link" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Página Inicial -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h1>
+                    <i class="fas fa-server"></i>
+                    Desafio Final
+                </h1>
+                <p>API RESTful para gerenciamento de clientes, produtos e usuários</p>
+                <p>Desenvolvimento Back-end II - Prof. Luccas Rafael</p>
+                <p>Alunos - Geovanna Karin e Rodrigo Melo</p>
+            </div>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Autenticação JWT</h3>
+                    <p>Sistema completo de login/logout com tokens seguros e validação de acesso.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>MySQL + Cache</h3>
+                    <p>Banco de dados relacional com sistema de cache inteligente para otimização.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3>CRUD Completo</h3>
+                    <p>Operações completas para clientes, produtos e usuários com validações.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-code-branch"></i>
+                    </div>
+                    <h3>Arquitetura Modular</h3>
+                    <p>Estrutura organizada em controllers, services, middlewares e rotas.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-vial"></i>
+                    </div>
+                    <h3>Testes Automatizados</h3>
+                    <p>Suíte completa de testes com Jest e Supertest para garantir qualidade.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Interface Web</h3>
+                    <p>Frontend moderno e responsivo para demonstração das funcionalidades.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Login -->
+        <div id="login" class="page">
+            <div class="login-form">
+                <h2 style="text-align: center; margin-bottom: 2rem; color: #667eea;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </h2>
+                
+                <div id="login-alert"></div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="usuario">Usuário:</label>
+                        <input type="text" id="usuario" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="senha">Senha:</label>
+                        <input type="password" id="senha" class="form-control" required>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-full">
+                        <i class="fas fa-sign-in-alt"></i> Entrar
+                    </button>
+                </form>
+
+                <div style="margin-top: 2rem; padding: 1rem; background: #f8f9fa; border-radius: 10px;">
+                    <h4>Usuários de teste:</h4>
+                    <p><strong>admin</strong> / password</p>
+                    <p><strong>user1</strong> / password</p>
+                    <p><strong>teste</strong> / password</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Página de Produtos -->
+        <div id="produtos" class="page">
+            <div class="card">
+                <h2>
+                    <i class="fas fa-box"></i> Produtos
+                    <small style="color: #666; font-size: 0.7em;">(Acesso Público)</small>
+                </h2>
+                
+                <div id="produtos-alert"></div>
+                <div id="produtos-loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Carregando produtos...</p>
+                </div>
+                
+                <div id="produtos-content"></div>
+            </div>
+        </div>
+
+        <!-- Página de Clientes -->
+        <div id="clientes" class="page">
+            <div class="card">
+                <h2>
+                    <i class="fas fa-users"></i> Clientes
+                    <small style="color: #666; font-size: 0.7em;">(Autenticação Requerida + Cache)</small>
+                </h2>
+                
+                <div id="clientes-alert"></div>
+                <div id="clientes-loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Carregando clientes...</p>
+                </div>
+                
+                <div id="clientes-content"></div>
+            </div>
+        </div>
+
+        <!-- Página de Usuários -->
+        <div id="usuarios" class="page">
+            <div class="card">
+                <h2>
+                    <i class="fas fa-user-cog"></i> Usuários
+                    <small style="color: #666; font-size: 0.7em;">(Autenticação Requerida)</small>
+                </h2>
+                
+                <div id="usuarios-alert"></div>
+                <div id="usuarios-loading" class="loading hidden">
+                    <div class="spinner"></div>
+                    <p>Carregando usuários...</p>
+                </div>
+                
+                <div id="usuarios-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configurações
+        const API_BASE = 'http://localhost:3000';
+        let currentUser = null;
+        let authToken = localStorage.getItem('authToken');
+
+        // Inicializar aplicação
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadProdutos(); 
+        });
+
+        // Verificar autenticação
+        function checkAuth() {
+            if (authToken) {
+                
+                fetch(`${API_BASE}/usuarios`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        showUserMenu();
+                    } else {
+                        logout();
+                    }
+                })
+                .catch(() => {
+                    logout();
+                });
+            }
+        }
+
+        // Mostrar página
+        function showPage(pageId) {
+            // Esconder todas as páginas
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Remover classe active dos links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Mostrar página selecionada
+            document.getElementById(pageId).classList.add('active');
+
+            // Ativar link correspondente
+            event.target.classList.add('active');
+
+            // Carregar dados conforme a página
+            switch(pageId) {
+                case 'produtos':
+                    loadProdutos();
+                    break;
+                case 'clientes':
+                    if (authToken) loadClientes();
+                    break;
+                case 'usuarios':
+                    if (authToken) loadUsuarios();
+                    break;
+            }
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            const alertDiv = document.getElementById('login-alert');
+
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ usuario, senha })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.data.token;
+                    currentUser = data.data;
+                    localStorage.setItem('authToken', authToken);
+                    
+                    alertDiv.innerHTML = '<div class="alert alert-success">Login realizado com sucesso!</div>';
+                    
+                    setTimeout(() => {
+                        showUserMenu();
+                        showPage('home');
+                    }, 1000);
+                } else {
+                    alertDiv.innerHTML = `<div class="alert alert-error">${data.message || 'Erro ao fazer login'}</div>`;
+                }
+            } catch (error) {
+                alertDiv.innerHTML = '<div class="alert alert-error">Erro de conexão com o servidor</div>';
+            }
+        });
+
+        // Logout
+        function logout() {
+            if (authToken) {
+                fetch(`${API_BASE}/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+            }
+            
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('authToken');
+            
+            document.getElementById('auth-links').classList.remove('hidden');
+            document.getElementById('user-menu').classList.add('hidden');
+            
+            showPage('home');
+        }
+
+        // Mostrar menu do usuário
+        function showUserMenu() {
+            document.getElementById('auth-links').classList.add('hidden');
+            document.getElementById('user-menu').classList.remove('hidden');
+            
+            if (currentUser) {
+                document.getElementById('user-info').textContent = currentUser.usuario;
+            }
+        }
+
+        // Carregar produtos
+        async function loadProdutos() {
+            const loading = document.getElementById('produtos-loading');
+            const content = document.getElementById('produtos-content');
+            const alert = document.getElementById('produtos-alert');
+
+            loading.classList.remove('hidden');
+            content.innerHTML = '';
+            alert.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/produtos`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.data.length > 0) {
+                        content.innerHTML = `
+                            <p><strong>Total:</strong> ${data.total} produtos encontrados</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Descrição</th>
+                                        <th>Preço</th>
+                                        <th>Data Atualização</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.data.map(produto => `
+                                        <tr>
+                                            <td>${produto.id}</td>
+                                            <td>${produto.nome}</td>
+                                            <td>${produto.descricao}</td>
+                                            <td>R$ ${parseFloat(produto.preco).toFixed(2)}</td>
+                                            <td>${new Date(produto.data_atualizado).toLocaleString('pt-BR')}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    } else {
+                        content.innerHTML = '<p>Nenhum produto encontrado.</p>';
+                    }
+                } else {
+                    alert.innerHTML = `<div class="alert alert-error">Erro ao carregar produtos: ${data.message}</div>`;
+                }
+            } catch (error) {
+                alert.innerHTML = '<div class="alert alert-error">Erro de conexão com o servidor</div>';
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+
+        // Carregar clientes
+        async function loadClientes() {
+            const loading = document.getElementById('clientes-loading');
+            const content = document.getElementById('clientes-content');
+            const alert = document.getElementById('clientes-alert');
+
+            loading.classList.remove('hidden');
+            content.innerHTML = '';
+            alert.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/clientes`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Mostrar fonte dos dados (cache ou banco)
+                    const sourceInfo = data.source === 'cache' ? 
+                        '<span style="color: #28a745;">🎯 Dados do CACHE</span>' : 
+                        '<span style="color: #007bff;">🗄️ Dados do BANCO</span>';
+                    
+                    if (data.data.length > 0) {
+                        content.innerHTML = `
+                            <p><strong>Total:</strong> ${data.total} clientes | ${sourceInfo}</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Sobrenome</th>
+                                        <th>Email</th>
+                                        <th>Idade</th>
+                                        <th>Cadastro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.data.map(cliente => `
+                                        <tr>
+                                            <td>${cliente.id}</td>
+                                            <td>${cliente.nome}</td>
+                                            <td>${cliente.sobrenome}</td>
+                                            <td>${cliente.email}</td>
+                                            <td>${cliente.idade}</td>
+                                            <td>${new Date(cliente.created_at).toLocaleString('pt-BR')}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    } else {
+                        content.innerHTML = '<p>Nenhum cliente encontrado.</p>';
+                    }
+                } else {
+                    alert.innerHTML = `<div class="alert alert-error">Erro ao carregar clientes: ${data.message}</div>`;
+                }
+            } catch (error) {
+                alert.innerHTML = '<div class="alert alert-error">Erro de conexão com o servidor</div>';
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+
+        // Carregar usuários
+        async function loadUsuarios() {
+            const loading = document.getElementById('usuarios-loading');
+            const content = document.getElementById('usuarios-content');
+            const alert = document.getElementById('usuarios-alert');
+
+            loading.classList.remove('hidden');
+            content.innerHTML = '';
+            alert.innerHTML = '';
+
+            try {
+                const response = await fetch(`${API_BASE}/usuarios`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.data.length > 0) {
+                        content.innerHTML = `
+                            <p><strong>Total:</strong> ${data.total} usuários</p>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Usuário</th>
+                                        <th>Cadastro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.data.map(usuario => `
+                                        <tr>
+                                            <td>${usuario.id}</td>
+                                            <td>${usuario.usuario}</td>
+                                            <td>${new Date(usuario.created_at).toLocaleString('pt-BR')}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        `;
+                    } else {
+                        content.innerHTML = '<p>Nenhum usuário encontrado.</p>';
+                    }
+                } else {
+                    alert.innerHTML = `<div class="alert alert-error">Erro ao carregar usuários: ${data.message}</div>`;
+                }
+            } catch (error) {
+                alert.innerHTML = '<div class="alert alert-error">Erro de conexão com o servidor</div>';
+            } finally {
+                loading.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
