@@ -1,7 +1,7 @@
 Desafio Final - Desenvolvimento Back-end II
 API RESTful para gerenciamento de clientes, produtos e usuários com autenticação JWT.
 
-🚀 Tecnologias
+Tecnologias:
 Node.js
 Express.js
 MySQL
@@ -39,11 +39,12 @@ desafio-backend-final/
 │   └── api.test.js
 └── scripts/
     └── setup.js
-📋 Pré-requisitos
+Pré-requisitos
 Node.js (versão 14 ou superior)
 MySQL (versão 8 ou superior)
 Git
-🔧 Instalação
+
+Instalação
 Clone o repositório:
 bash
 git clone <url-do-repositorio>
@@ -65,7 +66,7 @@ npm run dev
 
 # Produção
 npm start
-📡 Endpoints da API
+Endpoints da API
 Público
 GET / - Informações da API
 POST /login - Autenticação
@@ -84,11 +85,11 @@ GET /usuarios - Listar usuários
 POST /usuarios - Criar usuário
 PUT /usuarios/:id - Atualizar usuário
 DELETE /usuarios/:id - Deletar usuário
-🔐 Autenticação
+Autenticação
 Para acessar endpoints protegidos, inclua o token no header:
 
 Authorization: Bearer <seu-token-jwt>
-🧪 Testes
+Testes
 bash
 # Executar todos os testes
 npm test
@@ -99,12 +100,12 @@ npm run test:watch
 Usuário: admin | Senha: password
 Usuário: user1 | Senha: password
 Usuário: teste | Senha: password
-💾 Cache
+Cache
 ✅ Endpoint GET /clientes usa cache de 30 segundos
 ✅ Cache é invalidado automaticamente ao criar/editar/deletar clientes
 ✅ Logs detalhados mostram se dados vieram do cache ou banco
-✅ Console mostra: "🎯 Dados servidos do CACHE" ou "🗄️ Dados servidos do BANCO DE DADOS"
-🌐 Exemplo de uso
+✅ Console mostra: "Dados servidos do CACHE" ou "🗄️ Dados servidos do BANCO DE DADOS"
+Exemplo de uso
 bash
 # 1. Login
 curl -X POST http://localhost:3000/login \
@@ -136,10 +137,9 @@ curl -X POST http://localhost:3000/logout \
 ✅ Senhas criptografadas com bcrypt
 ✅ Endpoints obrigatórios (/, /login, /logout)
 ✅ Separação de responsabilidades (controllers ↔ services ↔ database)
-👥 Grupo
-[Nome do integrante 1]
-[Nome do integrante 2]
-[Nome do integrante 3]
+Grupo:
+Geovanna Karin
+Rodrigo Melo
 📅 Entrega
 Data limite: 26 de junho de 2025, até às 23:59
 
