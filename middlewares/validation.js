@@ -63,6 +63,7 @@ const validateCliente = (req, res, next) => {
 
   if (errors.length > 0) {
     return res.status(400).json({
+      success: false,
       error: 'Dados inválidos',
       details: errors
     });
@@ -98,6 +99,7 @@ const validateProduto = (req, res, next) => {
 
   if (errors.length > 0) {
     return res.status(400).json({
+      success: false,
       error: 'Dados inválidos',
       details: errors
     });
@@ -123,6 +125,7 @@ const validateUsuario = (req, res, next) => {
 
   if (errors.length > 0) {
     return res.status(400).json({
+      success: false,
       error: 'Dados inválidos',
       details: errors
     });
@@ -142,6 +145,7 @@ const validateLogin = (req, res, next) => {
 
   if (errors.length > 0) {
     return res.status(400).json({
+      success: false,
       error: 'Dados inválidos',
       details: errors
     });

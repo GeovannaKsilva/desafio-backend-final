@@ -9,6 +9,7 @@ const authenticateToken = async (req, res, next) => {
 
     if (!token) {
       return res.status(401).json({
+        success: false,
         error: 'Token de acesso requerido',
         message: 'Por favor, forneça um token válido no header Authorization'
       });
@@ -17,7 +18,7 @@ const authenticateToken = async (req, res, next) => {
     // Verificar se o token é válido
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Verificar se o token ainda existe no banco 
+    // Verificar se o token ainda existe no banco (não foi invalidado pelo logout)
     const [rows] = await pool.execute(
       'SELECT id, usuario, token FROM usuarios WHERE id = ? AND token = ?',
       [decodedToken.userId, token]
@@ -25,6 +26,7 @@ const authenticateToken = async (req, res, next) => {
 
     if (rows.length === 0) {
       return res.status(401).json({
+        success: false,
         error: 'Token inválido ou expirado',
         message: 'O token fornecido não é válido ou foi invalidado'
       });
@@ -41,6 +43,7 @@ const authenticateToken = async (req, res, next) => {
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {
       return res.status(401).json({
+        success: false,
         error: 'Token malformado',
         message: 'O token fornecido não possui um formato válido'
       });
@@ -48,6 +51,7 @@ const authenticateToken = async (req, res, next) => {
     
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({
+        success: false,
         error: 'Token expirado',
         message: 'O token fornecido expirou. Faça login novamente'
       });
@@ -55,6 +59,7 @@ const authenticateToken = async (req, res, next) => {
 
     console.error('Erro na autenticação:', error);
     return res.status(500).json({
+      success: false,
       error: 'Erro interno do servidor',
       message: 'Erro ao verificar autenticação'
     });
